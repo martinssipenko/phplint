@@ -10,6 +10,8 @@ class Linter
     /** @var callable */
     private $processCallback;
 
+    private $files = false;
+
     private $path;
     private $excludes;
     private $extensions;
@@ -27,8 +29,9 @@ class Linter
     {
         $processCallback = is_callable($this->processCallback) ? $this->processCallback : function() {};
 
-        $running = array();
         $errors  = array();
+        $running = array();
+
         while ($files || $running) {
             for ($i = count($running); $files && $i < $this->procLimit; $i++) {
                 $file     = array_shift($files);
@@ -56,18 +59,22 @@ class Linter
 
     public function getFiles()
     {
-        $files = new Finder();
-        $files->files()->in(realpath($this->path));
+        if (!$this->files) {
+            $this->files = new Finder();
+            $this->files->files()->in(realpath($this->path));
 
-        foreach ($this->excludes as $exclude) {
-            $files->notPath($exclude);
+            foreach ($this->excludes as $exclude) {
+                $this->files->notPath($exclude);
+            }
+
+            foreach ($this->extensions as $extension) {
+                $this->files->name('*.'.$extension);
+            }
+
+            $this->files = iterator_to_array($this->files);
         }
 
-        foreach ($this->extensions as $extension) {
-            $files->name('*.'.$extension);
-        }
-
-        return iterator_to_array($files);
+        return $this->files;
     }
 
     /**
