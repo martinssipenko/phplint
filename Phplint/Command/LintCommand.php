@@ -70,55 +70,64 @@ class LintCommand extends Command
         }
 
         $linter = new Linter($path, $exclude, $extensions);
-        if ($procLimit) {
-            $linter->setProcessLimit($procLimit);
-        }
-
-        if (file_exists(__DIR__.'/../../phplint.cache')) {
-            $linter->setCache(json_decode(file_get_contents(__DIR__.'/../../phplint.cache'), true));
-        }
 
         $files     = $linter->getFiles();
         $fileCount = count($files);
 
-        $progress = new ProgressBar($output, $fileCount);
-        $progress->setBarWidth(50);
-        $progress->setMessage('', 'filename');
-        $progress->setFormat(" %filename%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%");
-        $progress->start();
+        if ($fileCount > 0) {
+            if ($procLimit) {
+                $linter->setProcessLimit($procLimit);
+            }
 
-        $linter->setProcessCallback(function ($status, $filename) use ($progress) {
-            $progress->setMessage($filename, 'filename');
-            $progress->advance();
+            if (file_exists(__DIR__.'/../../phplint.cache')) {
+                $linter->setCache(json_decode(file_get_contents(__DIR__.'/../../phplint.cache'), true));
+            }
 
-            // if ($status == 'ok') {
-            //     $overview .= '.';
-            // } elseif ($status == 'error') {
-            //     $overview .= 'F';
-            //     // exit(1);
-            // }
-        });
 
-        $result = $linter->lint($files);
 
-        $progress->finish();
-        $output->writeln('');
-        $output->writeln('');
+            $progress = new ProgressBar($output, $fileCount);
+            $progress->setBarWidth(50);
+            $progress->setMessage('', 'filename');
+            $progress->setFormat(" %filename%\n %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%");
+            $progress->start();
 
-        $testTime = microtime(true) - $startTime;
+            $linter->setProcessCallback(function ($status, $filename) use ($progress) {
+                $progress->setMessage($filename, 'filename');
+                $progress->advance();
 
-        $code = 0;
-        $errCount = count($result);
-        $out = "<info>Checked {$fileCount} files in ".round($testTime, 1)." seconds</info>";
-        if ($errCount > 0) {
-            $out .= "<info> and found syntax errors in </info><error>{$errCount}</error><info> files.</info>";
-            $out .= "\n" . json_encode($result, JSON_PRETTY_PRINT);
-            $code = 1;
-        } else {
-            $out .= '<info> a no syntax error were deteced.';
+                // if ($status == 'ok') {
+                //     $overview .= '.';
+                // } elseif ($status == 'error') {
+                //     $overview .= 'F';
+                //     // exit(1);
+                // }
+            });
+
+            $result = $linter->lint($files);
+
+            $progress->finish();
+            $output->writeln('');
+            $output->writeln('');
+
+            $testTime = microtime(true) - $startTime;
+
+            $code = 0;
+            $errCount = count($result);
+            $out = "<info>Checked {$fileCount} files in ".round($testTime, 1)." seconds</info>";
+            if ($errCount > 0) {
+                $out .= "<info> and found syntax errors in </info><error>{$errCount}</error><info> files.</info>";
+                $out .= "\n" . json_encode($result, JSON_PRETTY_PRINT);
+                $code = 1;
+            } else {
+                $out .= '<info> a no syntax error were deteced.';
+            }
+            $output->writeln($out);
+
+            return $code;
         }
-        $output->writeln($out);
 
-        return $code;
+        $output->writeln('<info>Could not find files to lint</info>');
+
+        return 0;
     }
 }
