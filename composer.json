@@ -4,6 +4,7 @@
   "type": "library",
   "keywords": [
     "phplint",
+    "lint",
     "syntax",
     "check"
   ],
