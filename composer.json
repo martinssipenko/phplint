@@ -27,7 +27,7 @@
     }
   },
   "bin": [
-    "bin/phplin"
+    "bin/phplint"
   ],
   "extra": {
     "branch-alias": {
