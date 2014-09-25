@@ -108,13 +108,13 @@ class LintCommand extends Command
 
         $code = 0;
         $errCount = count($result);
-        $out = "<info>Checked {$fileCount} files in ".round($testTime, 1)." seconds</info>";
+        $out = "<info>Checked {$fileCount} files in ".round($testTime, 1)." seconds and</info>";
         if ($errCount > 0) {
-            $out .= "<info> and found syntax errors in </info><error>{$errCount}</error><info> files.</info>";
+            $out .= "<info> found syntax errors in </info><error>{$errCount}</error><info> files.</info>";
             $out .= "\n" . json_encode($result, JSON_PRETTY_PRINT);
             $code = 1;
         } else {
-            $out .= '<info> a no syntax error were deteced.';
+            $out .= '<info> no syntax error were deteced.';
         }
         $output->writeln($out.PHP_EOL);
 
