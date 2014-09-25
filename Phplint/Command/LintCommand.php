@@ -84,6 +84,7 @@ class LintCommand extends Command
         $progress->start();
 
         $linter->setProcessCallback(function ($status, $filename) use ($progress) {
+            /*
             $overview = $progress->getMessage('overview');
 
             if ($status == 'ok') {
@@ -94,6 +95,7 @@ class LintCommand extends Command
             }
 
             $progress->setMessage($overview, 'overview');
+            */
             $progress->advance();
         });
 

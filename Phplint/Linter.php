@@ -34,7 +34,7 @@ class Linter
                 $file     = array_shift($files);
                 $fileName = $file->getRealpath();
 
-                $running[$fileName] = new Lint('hhvm -l '.$fileName);
+                $running[$fileName] = new Lint(PHP_BINARY.' -l '.$fileName);
                 $running[$fileName]->start();
             }
 
