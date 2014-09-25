@@ -27,7 +27,7 @@
     }
   },
   "bin": [
-    "bin/composer"
+    "bin/phplin"
   ],
   "extra": {
     "branch-alias": {
