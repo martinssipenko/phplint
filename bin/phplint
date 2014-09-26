@@ -7,7 +7,7 @@ if (PHP_SAPI !== 'cli' && PHP_MINOR_VERSION <= 3) {
 
 $loaded = false;
 
-foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php') as $file) {
     if (file_exists($file)) {
         require $file;
         $loaded = true;

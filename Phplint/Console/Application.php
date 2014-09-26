@@ -7,11 +7,12 @@ use Symfony\Component\Console\Application as BaseApplication;
 
 class Application extends BaseApplication
 {
+	const NAME    = 'phplint';
 	const VERSION = '0.0.1';
 
-	public function getVersion()
+	public function __construct()
 	{
-		return self::VERSION;
+		parent::__construct(self::NAME, self::VERSION);
 	}
 
     /**
