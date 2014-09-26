@@ -57,7 +57,7 @@ class Linter
     public function getFiles()
     {
         $files = new Finder();
-        $files->files()->in(realpath($this->path));
+        $files->files()->ignoreUnreadableDirs()->in(realpath($this->path));
 
         foreach ($this->excludes as $exclude) {
             $files->notPath($exclude);
