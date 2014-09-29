@@ -1,4 +1,4 @@
-{
+5.{
   "name": "phplint/phplint",
   "description": "phplint can speed upi your linting my running several processes asynchronously",
   "type": "library",
@@ -17,9 +17,9 @@
   ],
   "require": {
     "php": ">=5.4",
-    "symfony/console": "2.*",
-    "symfony/finder": "2.*",
-    "symfony/process": "2.*"
+    "symfony/console": "2.5.*",
+    "symfony/finder": "2.5.*",
+    "symfony/process": "2.5.*"
   },
   "autoload": {
     "psr-4": {
