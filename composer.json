@@ -1,4 +1,4 @@
-5.{
+{
   "name": "phplint/phplint",
   "description": "phplint can speed upi your linting my running several processes asynchronously",
   "type": "library",
